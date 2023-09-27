@@ -1,0 +1,4 @@
+me\johann\simplespawn\Commands\spawn.class
+me\johann\simplespawn\Commands\setspawn.class
+me\johann\simplespawn\SimpleSpawn.class
+me\johann\simplespawn\Utility\Importer.class

@@ -1,0 +1,13 @@
+# This is the prefix before every message e.G. [simplespawn] you were teleportet to the spawn!
+# It will also work with minecraft color code (see https://htmlcolorcodes.com/minecraft-color-codes/)
+prefix: "[simplespawn] "
+
+#if this is true the player has to be on ground to teleport to spawn
+mustbeonground: true
+
+#permissions:
+#simplespawn.setspawn
+#simplespawn.spawn
+
+#IMPORTANT!!!!!!
+#You have to run /setspawn again if you rename the world of the spawn

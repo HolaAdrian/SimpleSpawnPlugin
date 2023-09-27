@@ -1,0 +1,8 @@
+name: SimpleSpawn
+version: '1.0'
+main: me.johann.simplespawn.SimpleSpawn
+commands:
+  spawn:
+    description: Teleport to the spawn!
+  setspawn:
+    description: Set the spawn!
