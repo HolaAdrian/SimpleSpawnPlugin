@@ -10,10 +10,17 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permission;
 
 public class spawn implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+        if (commandSender instanceof Player){
+            if (!commandSender.hasPermission(new Permission("simplespawn.spawn"))){
+                commandSender.sendMessage("You don't have permission to teleport to spawn!");
+                return false;
+            }
+        }
         if (SimpleSpawn.main.getConfig() != null){
             FileConfiguration config = SimpleSpawn.main.getConfig();
             if (config.getString("prefix") != null){

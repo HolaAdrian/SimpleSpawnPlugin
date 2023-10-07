@@ -9,12 +9,19 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permission;
 
 import java.io.IOException;
 
 public class setspawn implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+        if (commandSender instanceof Player){
+            if (!commandSender.hasPermission(new Permission("simplespawn.setspawn"))){
+                commandSender.sendMessage(ChatColor.RED+ "You don't have permission to set the spawn!");
+                return false;
+            }
+        }
         if (SimpleSpawn.main.getConfig() != null){
             FileConfiguration config = SimpleSpawn.main.getConfig();
             if (config.getString("prefix") != null){
