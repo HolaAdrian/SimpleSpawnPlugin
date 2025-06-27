@@ -1,5 +1,5 @@
 name: SimpleSpawn
-version: '3.0'
+version: '3.1'
 main: de.adrian.simpleSpawn.SimpleSpawn
 api-version: '1.21'
 authors: [ hiadrian ]
@@ -11,3 +11,5 @@ commands:
     description:  Set the spawn!
   spawninfos:
     description:  Show the spawn coordination's and worldname!
+  back:
+    description: Get back after teleporting to spawn!

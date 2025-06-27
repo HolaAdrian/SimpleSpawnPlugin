@@ -1,5 +1,6 @@
 package de.adrian.simpleSpawn.Utility;
 
+import de.adrian.simpleSpawn.Commands.BackCommand;
 import de.adrian.simpleSpawn.Commands.SetSpawnCommand;
 import de.adrian.simpleSpawn.Commands.ShowSpawnInformations;
 import de.adrian.simpleSpawn.Commands.SpawnCommand;
@@ -19,9 +20,13 @@ public class Importer {
         Permission showspawn = new Permission("simplespawn.showspawn");
         spawn.setDescription("Allows the player to see the spawn coordination's");
 
+        Permission back = new Permission("simplespawn.back");
+        spawn.setDescription("Allows the player to teleport back after going to spawn!");
+
         pluginManager.addPermission(setspawn);
         pluginManager.addPermission(spawn);
         pluginManager.addPermission(showspawn);
+        pluginManager.addPermission(back);
 
     }
 
@@ -30,6 +35,7 @@ public class Importer {
         main.getCommand("spawn").setExecutor(new SpawnCommand());
         main.getCommand("setspawn").setExecutor(new SetSpawnCommand());
         main.getCommand("spawninfos").setExecutor(new ShowSpawnInformations());
+        main.getCommand("back").setExecutor(new BackCommand());
     }
 
 

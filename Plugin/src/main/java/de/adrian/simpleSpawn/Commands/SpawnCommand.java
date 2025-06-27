@@ -16,6 +16,9 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+import java.util.UUID;
+
 public class SpawnCommand implements CommandExecutor {
     private BukkitTask teleportTask;
     private int countdowntime = 0;
@@ -136,7 +139,12 @@ public class SpawnCommand implements CommandExecutor {
         World world = Bukkit.getWorld(custom.getString("spawn.world"));
 
         Location spawn = new Location(world, x, y, z, yaw, pitch);
+
+        HashMap<String, Location> playercoordinations = SimpleSpawn.main.playercoordinations;
+        playercoordinations.put(player.getUniqueId().toString(), player.getLocation());
+
         player.teleport(spawn);
+
         player.sendMessage(prefix + ChatColor.GREEN + "You were teleported to spawn!");
         player.sendActionBar(Component.text(ChatColor.GREEN + "Teleport successful!"));
     }

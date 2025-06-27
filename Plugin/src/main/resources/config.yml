@@ -17,6 +17,23 @@ cooldown: 5
 
 
 # --------------------------------
+# /back Configurations
+# --------------------------------
+
+# If true, players can only use /back ONCE after death or teleport
+OneTimeUse: true
+
+# If true, a countdown is required before teleporting back
+cooldownrequirement_back: true
+
+# Countdown duration in seconds for /back
+cooldown_back: 5
+
+# If true, the player must be on the ground to use /back
+ground_back: true
+
+
+# --------------------------------
 # Message Prefix
 # --------------------------------
 
@@ -25,17 +42,18 @@ cooldown: 5
 # RGB effects supported: https://minecraft.menu/minecraft-rgb-generator
 prefix: "[simplespawn] "
 
+
 # --------------------------------
 # Permissions
 # --------------------------------
 
-
-# Permissions can be changes by plugins like luckperms: https://luckperms.net/
-
+# Permissions can be changed by plugins like LuckPerms: https://luckperms.net/
 
 # - simplespawn.setspawn: Allows setting the spawn point with /setspawn
 # - simplespawn.spawn: Allows using the /spawn command
 # - simplespawn.showspawn: Allows using the /spawncoords command
+# - simplespawn.back: Allows using the /back command
+
 
 # --------------------------------
 # Important Information

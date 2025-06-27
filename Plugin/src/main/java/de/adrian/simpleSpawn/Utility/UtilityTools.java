@@ -55,4 +55,51 @@ public class UtilityTools {
             ex.printStackTrace();
         }
     }
+
+
+    public static FileConfiguration playerConfig = null;
+    public static File playerConfigFile = null;
+
+    public static FileConfiguration getPlayerConfig() {
+        return playerConfig;
+    }
+
+    public static File getPlayerConfigFile() {
+        return playerConfigFile;
+    }
+
+    public static void loadPlayerConfig() {
+        if (playerConfigFile == null) {
+            playerConfigFile = new File(SimpleSpawn.main.getDataFolder(), "playercoords.yml");
+        }
+        playerConfig = YamlConfiguration.loadConfiguration(playerConfigFile);
+
+
+
+        playerConfig.addDefault("player-spawns.069a79f4-44e9-4726-a5be-fca90e38aaf5.x", 0.0);
+        playerConfig.addDefault("player-spawns.069a79f4-44e9-4726-a5be-fca90e38aaf5.y", 0.0);
+        playerConfig.addDefault("player-spawns.069a79f4-44e9-4726-a5be-fca90e38aaf5.z", 0.0);
+        playerConfig.addDefault("player-spawns.069a79f4-44e9-4726-a5be-fca90e38aaf5.yaw", 90.0);
+        playerConfig.addDefault("player-spawns.069a79f4-44e9-4726-a5be-fca90e38aaf5.pitch", 0.0);
+        playerConfig.addDefault("player-spawns.069a79f4-44e9-4726-a5be-fca90e38aaf5.world", "world");
+
+
+
+        playerConfig.options().copyDefaults(true);
+
+        savePlayerConfig();
+
+
+    }
+
+    public static void savePlayerConfig() {
+        if (playerConfig == null || playerConfigFile == null) {
+            return;
+        }
+        try {
+            playerConfig.save(playerConfigFile);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
 }
