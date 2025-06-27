@@ -18,7 +18,7 @@ public class setspawn implements CommandExecutor {
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if (commandSender instanceof Player){
             if (!commandSender.hasPermission(new Permission("simplespawn.setspawn"))){
-                commandSender.sendMessage(ChatColor.RED+ "You don't have permission to set the spawn!");
+                commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', SimpleSpawn.main.getConfig().getString("prefix")) + ChatColor.RED+ "You don't have permission to set the spawn!");
                 return false;
             }
         }
@@ -46,25 +46,25 @@ public class setspawn implements CommandExecutor {
                             throw new RuntimeException(e);
                         }
 
-                        player.sendMessage(prefix + ChatColor.GREEN + "The spawn was set and saved!");
+                        player.sendMessage((ChatColor.translateAlternateColorCodes('&', prefix)) + ChatColor.GREEN + "The spawn was set and saved!");
                     }
                     else {
-                        commandSender.sendMessage(prefix + ChatColor.RED + "No spawn.yml was found or this is an bug!");
+                        commandSender.sendMessage((ChatColor.translateAlternateColorCodes('&', prefix)) + ChatColor.RED + "No spawn.yml was found or this is an bug!");
                     }
             }
                 else {
-                    commandSender.sendMessage(prefix + ChatColor.RED + "You have to be a player to set the spawn!");
+                    commandSender.sendMessage((ChatColor.translateAlternateColorCodes('&', prefix)) + ChatColor.RED + "You have to be a player to set the spawn!");
                 }
 
 
             }
             else {
-                commandSender.sendMessage(ChatColor.RED + "The prefix in the config is corrupted or is a false format!");
+                commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', SimpleSpawn.main.getConfig().getString("prefix")) + ChatColor.RED + "The prefix in the config is corrupted or is a false format!");
 
             }
         }
         else {
-            commandSender.sendMessage(ChatColor.RED + "There is no config.yml or this is a bug");
+            commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', SimpleSpawn.main.getConfig().getString("prefix")) + ChatColor.RED + "There is no config.yml or this is a bug");
         }
         return false;
     }

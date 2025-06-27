@@ -17,7 +17,7 @@ public class spawn implements CommandExecutor {
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if (commandSender instanceof Player){
             if (!commandSender.hasPermission(new Permission("simplespawn.spawn"))){
-                commandSender.sendMessage("You don't have permission to teleport to spawn!");
+                commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', SimpleSpawn.main.getConfig().getString("prefix")) + ChatColor.RED +"You don't have permission to teleport to spawn!");
                 return false;
             }
         }
@@ -46,42 +46,42 @@ public class spawn implements CommandExecutor {
                                 if (mustground == true){
                                     if (player.isOnGround()){
                                         player.teleport(spawn);
-                                        player.sendMessage(prefix + ChatColor.GREEN + "You were teleportet to the spawn!");
+                                        player.sendMessage((ChatColor.translateAlternateColorCodes('&', prefix) + ChatColor.GREEN + "You were teleportet to the spawn!"));
                                     }
                                     else {
-                                        player.sendMessage(prefix + ChatColor.RED + "You must be on ground to teleport to spawn");
+                                        player.sendMessage((ChatColor.translateAlternateColorCodes('&', prefix) + ChatColor.RED + "You must be on ground to teleport to spawn"));
                                     }
                                 }
                                 else if (mustground == false){
                                     player.teleport(spawn);
-                                    player.sendMessage(prefix + ChatColor.GREEN + "You were teleportet to the spawn!");
+                                    player.sendMessage((ChatColor.translateAlternateColorCodes('&', prefix) + ChatColor.GREEN + "You were teleportet to the spawn!"));
                                 }
                             }
                             else {
-                                commandSender.sendMessage(prefix + ChatColor.RED + "You must be a player to teleport to spawn!");
+                                commandSender.sendMessage((ChatColor.translateAlternateColorCodes('&', prefix) + ChatColor.RED + "You must be a player to teleport to spawn!"));
                             }
 
 
                         }
                         else {
-                            commandSender.sendMessage(prefix + ChatColor.RED + "mustbeonground in config.yml is corrupted or not set");
+                            commandSender.sendMessage((ChatColor.translateAlternateColorCodes('&', prefix) + ChatColor.RED + "mustbeonground in config.yml is corrupted or not set"));
                         }
 
                     }
                     else {
-                        commandSender.sendMessage(prefix + ChatColor.RED + "No spawn was set or it's corrupted please contact an admin!");
+                        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix) + ChatColor.RED + "No spawn was set or it's corrupted please contact an admin!");
                     }
                 }
                 else {
-                    commandSender.sendMessage(prefix + ChatColor.RED + "spawn.yml was not found this might be a bug!");
+                    commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix) + ChatColor.RED + "spawn.yml was not found this might be a bug!");
                 }
             }
             else {
-                commandSender.sendMessage(ChatColor.RED + "The prefix is empty or corrupted!");
+                commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', SimpleSpawn.main.getConfig().getString("prefix")) +ChatColor.RED + "The prefix is empty or corrupted!");
             }
         }
         else {
-            commandSender.sendMessage(ChatColor.RED + "No config.yml was found this might be a bug!");
+            commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', SimpleSpawn.main.getConfig().getString("prefix")) + ChatColor.RED + "No config.yml was found this might be a bug!");
         }
 
 

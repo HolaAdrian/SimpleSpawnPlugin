@@ -6,3 +6,5 @@ commands:
     description: Teleport to the spawn!
   setspawn:
     description: Set the spawn!
+  spawncoords:
+    description: Show the spawn coordination's

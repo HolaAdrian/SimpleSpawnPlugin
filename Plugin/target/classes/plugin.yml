@@ -1,8 +1,10 @@
 name: SimpleSpawn
-version: '1.0'
+version: '2.0'
 main: me.adrian.simplespawn.SimpleSpawn
 commands:
   spawn:
     description: Teleport to the spawn!
   setspawn:
     description: Set the spawn!
+  spawncoords:
+    description: Show the spawn coordination's
