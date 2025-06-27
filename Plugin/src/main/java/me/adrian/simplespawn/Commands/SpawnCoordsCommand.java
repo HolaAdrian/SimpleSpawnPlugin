@@ -11,19 +11,20 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.permissions.Permission;
 
+
+
 public class SpawnCoordsCommand implements CommandExecutor {
+    String prefix = SimpleSpawn.main.getPrefix();
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
             if (!commandSender.hasPermission(new Permission("simplespawn.showspawn"))) {
                 FileConfiguration config = SimpleSpawn.main.getConfig();
-                String prefix = config.getString("prefix");
-                commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix) + ChatColor.RED + "You don't have permission to see the spawns coordination's!");
+                commandSender.sendMessage(prefix + ChatColor.RED + "You don't have permission to see the spawns coordination's!");
                 return false;
             }
         if (SimpleSpawn.main.getConfig() != null){
             FileConfiguration config = SimpleSpawn.main.getConfig();
             if (config.getString("prefix") != null){
-                String prefix = config.getString("prefix");
                 if (SimpleSpawn.main.getCustomConfig() != null){
                     FileConfiguration custom = SimpleSpawn.main.getCustomConfig();
                     if (custom.isSet("spawn.world")){
@@ -40,25 +41,23 @@ public class SpawnCoordsCommand implements CommandExecutor {
                         double roundYaw = Math.round(yaw);
                         double roundPitch = Math.round(pitch);
                         String worldname = world.getName();
-                        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix) + ChatColor.GOLD + "Spawn Informations: \nX: " + roundX + "\nY: " + roundY + "\nZ: " + roundZ + "\nYaw: " + roundYaw + "\nPitch: " + roundPitch + "\nWorldname: "+ worldname);
+                        commandSender.sendMessage(prefix + ChatColor.GOLD + "Spawn Informations: \nX: " + roundX + "\nY: " + roundY + "\nZ: " + roundZ + "\nYaw: " + roundYaw + "\nPitch: " + roundPitch + "\nWorldname: "+ worldname);
                     }
                     else {
-                        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix) + ChatColor.RED + "No spawn was set or it's corrupted please contact an admin!");
+                        commandSender.sendMessage(prefix + ChatColor.RED + "No spawn was set or it's corrupted please contact an admin!");
                     }
                 }
                 else {
-                    commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix) + ChatColor.RED + "spawn.yml was not found this might be a bug!");
+                    commandSender.sendMessage(prefix + ChatColor.RED + "spawn.yml was not found this might be a bug!");
                 }
             }
             else {
-                String prefix = config.getString("prefix");
-                commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix) + ChatColor.RED + "The prefix is empty or corrupted!");
+                commandSender.sendMessage(prefix + ChatColor.RED + "The prefix is empty or corrupted!");
             }
         }
         else {
             FileConfiguration config = SimpleSpawn.main.getConfig();
-            String prefix = config.getString("prefix");
-            commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix) + ChatColor.RED + "No config.yml was found this might be a bug!");
+            commandSender.sendMessage(prefix + ChatColor.RED + "No config.yml was found this might be a bug!");
         }
 
 

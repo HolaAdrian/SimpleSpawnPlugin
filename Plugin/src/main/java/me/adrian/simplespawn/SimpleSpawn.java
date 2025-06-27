@@ -2,6 +2,7 @@ package me.adrian.simplespawn;
 
 import me.adrian.simplespawn.Utility.Importer;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -24,6 +25,12 @@ public final class SimpleSpawn extends JavaPlugin {
         return customConfigFile;
     }
 
+    public String prefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("prefix"));
+
+
+    public String getPrefix(){
+        return prefix;
+    }
     @Override
     public void onEnable() {
         main = this;
