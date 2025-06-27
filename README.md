@@ -1,5 +1,9 @@
-Simple spawn with custom prefix
-Decide what prefix you want for your Messages by simply using an config!
-The Plugin should work with most of the Minecraft versions!
-The Plugin works with Paper,Spigot and Craftbukkit
-Just drag the jar out of PackagedPlugin into your plugins folder!
+SimpleSpawn is a lightweight spawn plugin that lets you customize the message prefix easily through the config.yml.
+
+It is compatible with most Minecraft versions and works seamlessly with Paper, Spigot, and CraftBukkit servers.
+
+To install, simply drag the .jar file from the PackagedPlugin folder into your server’s plugins directory.
+
+    📌 Note: Be sure to read the config.yml before using the plugin.
+
+You can find the source code in the Code folder, and download the standalone plugin from the Plugin folder.
