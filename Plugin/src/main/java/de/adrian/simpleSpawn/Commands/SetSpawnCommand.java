@@ -22,25 +22,25 @@ public class SetSpawnCommand implements CommandExecutor {
         String prefix = SimpleSpawn.main.prefix;
         if (commandSender instanceof Player){
             if (!commandSender.hasPermission(new Permission("simplespawn.setspawn"))){
-                commandSender.sendMessage(prefix + ChatColor.RED+ "You don't have permission to set the spawn!");
+                commandSender.sendMessage(prefix + ChatColor.RED + "Du hast keine Berechtigung, den Spawn-Punkt zu setzen!");
                 return false;
             }
         }
         if (SimpleSpawn.main.getConfig() == null){
-            commandSender.sendMessage(prefix + ChatColor.RED + "No config.yml was found!");
+            commandSender.sendMessage(prefix + ChatColor.RED + "Es wurde keine config.yml gefunden!");
             return false;
         }
         FileConfiguration config = SimpleSpawn.main.getConfig();
         if (config.getString("prefix") == null){
-            commandSender.sendMessage(prefix + ChatColor.RED + "The prefix is corrupted!");
+            commandSender.sendMessage(prefix + ChatColor.RED + "Der Prefix ist beschädigt!");
             return false;
         }
         if (UtilityTools.getCustomConfig() == null){
-            commandSender.sendMessage(prefix + ChatColor.RED + "The spawn.yml file was not found!");
+            commandSender.sendMessage(prefix + ChatColor.RED + "Die spawn.yml Datei wurde nicht gefunden!");
             return false;
         }
         if (!(commandSender instanceof Player)){
-            commandSender.sendMessage(prefix + ChatColor.RED + "You must be a player to set the spawn!");
+            commandSender.sendMessage(prefix + ChatColor.RED + "Du musst ein Spieler sein, um den Spawn-Punkt zu setzen!");
             return false;
         }
 
@@ -62,9 +62,8 @@ public class SetSpawnCommand implements CommandExecutor {
             throw new RuntimeException(e);
         }
 
-        player.sendMessage(prefix + ChatColor.GREEN + "The spawn has been set and saved!");
+        player.sendMessage(prefix + ChatColor.GREEN + "Der Spawn-Punkt wurde erfolgreich gesetzt und gespeichert!");
 
         return true;
-
     }
 }

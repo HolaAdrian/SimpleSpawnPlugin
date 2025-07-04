@@ -25,65 +25,62 @@ public class BackCommand implements CommandExecutor {
         String prefix = SimpleSpawn.main.prefix;
         if (commandSender instanceof Player) {
             if (!commandSender.hasPermission(new Permission("simplespawn.back"))) {
-                commandSender.sendMessage(prefix + ChatColor.RED + "You don't have permission to go back!");
+                commandSender.sendMessage(prefix + ChatColor.RED + "Du hast nicht die Berechtigung dich zurück zu teleportieren!");
                 return false;
             }
         }
 
         if (SimpleSpawn.main.getConfig() == null){
-            commandSender.sendMessage(prefix + ChatColor.RED + "No config.yml was found!");
+            commandSender.sendMessage(prefix + ChatColor.RED + "Es wurde keine config.yml gefunden!");
             return false;
         }
         FileConfiguration config = SimpleSpawn.main.getConfig();
         if (config.getString("prefix") == null){
-            commandSender.sendMessage(prefix + ChatColor.RED + "The prefix is corrupt!");
+            commandSender.sendMessage(prefix + ChatColor.RED + "Der Prefix ist beschädigt!");
             return false;
         }
         if (UtilityTools.getPlayerConfig() == null){
-            commandSender.sendMessage(prefix + ChatColor.RED + "The playercoords.yml file was not found!");
+            commandSender.sendMessage(prefix + ChatColor.RED + "Die playercoords.yml Datei wurde nicht gefunden!");
             return false;
         }
         if (!(commandSender instanceof Player)){
-            commandSender.sendMessage(prefix + ChatColor.RED + "You must be a player to go back!");
+            commandSender.sendMessage(prefix + ChatColor.RED + "Du musst ein Spieler sein, um zurückzukehren!");
             return false;
         }
 
         Player player = ((Player) commandSender).getPlayer();
 
         if (!SimpleSpawn.main.playercoordinations.containsKey(player.getUniqueId().toString())){
-            player.sendMessage(prefix + ChatColor.RED + "No valid coordinates found! Maybe you need to use /spawn first.");
+            player.sendMessage(prefix + ChatColor.RED + "Keine gültigen Koordinaten gefunden! Vielleicht musst du zuerst /spawn nutzen.");
             return false;
         }
 
         Location loc = SimpleSpawn.main.playercoordinations.get(player.getUniqueId().toString());
 
-
-
         if (!config.isBoolean("ground_back")) {
-            player.sendMessage(prefix + ChatColor.RED + "The 'ground_back' setting in config.yml is corrupt or not set");
+            player.sendMessage(prefix + ChatColor.RED + "Die 'ground_back' Einstellung in der config.yml ist beschädigt oder nicht gesetzt");
             return false;
         }
 
-
         if (config.getBoolean("ground_back") && !player.isOnGround()){
-            player.sendMessage(prefix+ ChatColor.RED + "You must be on the ground to teleport back!");
+            player.sendMessage(prefix+ ChatColor.RED + "Du musst am Boden stehen, um dich zurück zu teleportieren!");
             return false;
         }
 
         if (!config.isBoolean("cooldownrequirement_back")) {
-            player.sendMessage(prefix + ChatColor.RED + "The 'cooldownrequirement_back' setting in config.yml is corrupt or not set");
+            player.sendMessage(prefix + ChatColor.RED + "Die 'cooldownrequirement_back' Einstellung in der config.yml ist beschädigt oder nicht gesetzt");
             return false;
         }
 
         if (!config.isBoolean("OneTimeUse")) {
-            player.sendMessage(prefix + ChatColor.RED + "The 'OneTimeUse' setting in config.yml is corrupt or not set");
+            player.sendMessage(prefix + ChatColor.RED + "Die 'OneTimeUse' Einstellung in der config.yml ist beschädigt oder nicht gesetzt");
             return false;
         }
 
         if (!config.getBoolean("cooldownrequirement_back")){
             player.teleport(loc);
-            player.sendMessage(prefix + ChatColor.GREEN + "You were teleported back!");
-            player.sendActionBar(Component.text(ChatColor.GREEN + "Teleport successful!"));
+            player.sendMessage(prefix + ChatColor.GREEN + "Du wurdest zurück teleportiert!");
+            player.sendActionBar(Component.text(ChatColor.GREEN + "Teleport erfolgreich!"));
 
             if (config.getBoolean("OneTimeUse")) SimpleSpawn.main.playercoordinations.remove(player.getUniqueId().toString());
 
@@ -91,10 +88,9 @@ public class BackCommand implements CommandExecutor {
         }
 
         if (!config.isInt("cooldown_back")){
-            player.sendMessage(prefix + ChatColor.RED + "The 'cooldown_back' setting in config.yml is corrupted or not set");
+            player.sendMessage(prefix + ChatColor.RED + "Die 'cooldown_back' Einstellung in der config.yml ist beschädigt oder nicht gesetzt");
             return false;
         }
-
 
         int cooldown = config.getInt("cooldown_back");
 
@@ -105,22 +101,21 @@ public class BackCommand implements CommandExecutor {
             public void run() {
                 if (countdowntime >= cooldown) {
                     player.teleport(loc);
-                    player.sendMessage(prefix + ChatColor.GREEN + "You were teleported back!");
-                    player.sendActionBar(Component.text(ChatColor.GREEN + "Teleport successful!"));
+                    player.sendMessage(prefix + ChatColor.GREEN + "Du wurdest zurück teleportiert!");
+                    player.sendActionBar(Component.text(ChatColor.GREEN + "Teleport erfolgreich!"));
                     if (config.getBoolean("OneTimeUse")) SimpleSpawn.main.playercoordinations.remove(player.getUniqueId().toString());
                     teleportTask.cancel();
                     return;
                 }
 
                 if (Math.round(loc2.x()) != Math.round(player.getLocation().x()) || Math.round(loc2.y()) != Math.round(player.getLocation().y()) || Math.round(loc2.z()) != Math.round(player.getLocation().z())){
-                    player.sendActionBar(Component.text(ChatColor.RED + "You moved, so the teleport was canceled!"));
+                    player.sendActionBar(Component.text(ChatColor.RED + "Du hast dich bewegt, daher wurde der Teleport abgebrochen!"));
                     teleportTask.cancel();
                     return;
                 }
                 countdowntime++;
                 int timeLeft = cooldown - countdowntime + 1;
-                player.sendActionBar(Component.text(ChatColor.GREEN + "Teleporting in " + timeLeft + " seconds..."));
-
+                player.sendActionBar(Component.text(ChatColor.GREEN + "Teleport in " + timeLeft + " Sekunden..."));
 
             }
         }, 0L, 20L);

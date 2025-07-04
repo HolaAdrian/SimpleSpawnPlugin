@@ -6,14 +6,9 @@ import de.adrian.simpleSpawn.Utility.UtilityTools;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.UUID;
 
 public final class SimpleSpawn extends JavaPlugin {
 
@@ -39,7 +34,6 @@ public final class SimpleSpawn extends JavaPlugin {
         UtilityTools.loadPlayerConfig();
 
         SafeManager.loadAll();
-
 
     }
 

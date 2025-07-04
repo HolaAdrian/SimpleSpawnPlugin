@@ -12,12 +12,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.Permission;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
-import java.util.UUID;
 
 public class SpawnCommand implements CommandExecutor {
     private BukkitTask teleportTask;
@@ -27,50 +25,50 @@ public class SpawnCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (!(commandSender instanceof Player)) {
-            commandSender.sendMessage(prefix + ChatColor.RED + "You must be a player to teleport to spawn!");
+            commandSender.sendMessage(prefix + ChatColor.RED + "Du musst ein Spieler sein, um dich zum Spawn zu teleportieren!");
             return false;
         }
 
         Player player = (Player) commandSender;
 
         if (!player.hasPermission("simplespawn.spawn")) {
-            player.sendMessage(prefix + ChatColor.RED + "You don't have permission to teleport to spawn!");
+            player.sendMessage(prefix + ChatColor.RED + "Du hast keine Berechtigung, dich zum Spawn zu teleportieren!");
             return false;
         }
 
         if (SimpleSpawn.main.getConfig() == null) {
-            player.sendMessage(prefix + ChatColor.RED + "No config.yml was found!");
+            player.sendMessage(prefix + ChatColor.RED + "Es wurde keine config.yml gefunden!");
             return false;
         }
 
         FileConfiguration config = SimpleSpawn.main.getConfig();
 
         if (config.getString("prefix") == null) {
-            player.sendMessage(prefix + ChatColor.RED + "The prefix is corrupted!");
+            player.sendMessage(prefix + ChatColor.RED + "Der Prefix ist beschädigt!");
             return false;
         }
 
         if (UtilityTools.getCustomConfig() == null) {
-            player.sendMessage(prefix + ChatColor.RED + "spawn.yml was not found!");
+            player.sendMessage(prefix + ChatColor.RED + "spawn.yml wurde nicht gefunden!");
             return false;
         }
 
         FileConfiguration custom = UtilityTools.getCustomConfig();
 
         if (!custom.isSet("spawn.world")) {
-            player.sendMessage(prefix + ChatColor.RED + "No spawn was set or it's corrupted!");
+            player.sendMessage(prefix + ChatColor.RED + "Es wurde kein Spawn gesetzt oder er ist beschädigt!");
             return false;
         }
 
         if (!config.isBoolean("ground")) {
-            player.sendMessage(prefix + ChatColor.RED + "The 'ground' setting in config.yml is corrupted or not set");
+            player.sendMessage(prefix + ChatColor.RED + "Die 'ground'-Einstellung in der config.yml ist beschädigt oder nicht gesetzt!");
             return false;
         }
 
         boolean mustGround = config.getBoolean("ground");
 
         if (mustGround && !player.isOnGround()) {
-            player.sendMessage(prefix + ChatColor.RED + "You must be on the ground to teleport to spawn!");
+            player.sendMessage(prefix + ChatColor.RED + "Du musst am Boden stehen, um dich zum Spawn zu teleportieren!");
             return false;
         }
 
@@ -87,7 +85,7 @@ public class SpawnCommand implements CommandExecutor {
         FileConfiguration config = SimpleSpawn.main.getConfig();
 
         if (!config.isBoolean("cooldownrequirement")) {
-            player.sendMessage(prefix + ChatColor.RED + "The 'cooldownrequirement' setting in config.yml is corrupted or not set");
+            player.sendMessage(prefix + ChatColor.RED + "Die 'cooldownrequirement'-Einstellung in der config.yml ist beschädigt oder nicht gesetzt!");
             return;
         }
 
@@ -97,7 +95,7 @@ public class SpawnCommand implements CommandExecutor {
         }
 
         if (!config.isInt("cooldown")) {
-            player.sendMessage(prefix + ChatColor.RED + "The 'cooldown' setting in config.yml is corrupted or not set");
+            player.sendMessage(prefix + ChatColor.RED + "Die 'cooldown'-Einstellung in der config.yml ist beschädigt oder nicht gesetzt!");
             return;
         }
 
@@ -115,15 +113,13 @@ public class SpawnCommand implements CommandExecutor {
                 }
 
                 if (Math.round(loc.x()) != Math.round(player.getLocation().x()) || Math.round(loc.y()) != Math.round(player.getLocation().y()) || Math.round(loc.z()) != Math.round(player.getLocation().z())){
-                    player.sendActionBar(Component.text(ChatColor.RED + "You moved, so the teleport was canceled!"));
+                    player.sendActionBar(Component.text(ChatColor.RED + "Du hast dich bewegt, daher wurde der Teleport abgebrochen!"));
                     teleportTask.cancel();
                     return;
                 }
                 countdowntime++;
                 int timeLeft = cooldown - countdowntime + 1;
-                player.sendActionBar(Component.text(ChatColor.GREEN + "Teleporting in " + timeLeft + " seconds..."));
-
-
+                player.sendActionBar(Component.text(ChatColor.GREEN + "Teleport in " + timeLeft + " Sekunden..."));
             }
         }, 0L, 20L);
     }
@@ -145,7 +141,7 @@ public class SpawnCommand implements CommandExecutor {
 
         player.teleport(spawn);
 
-        player.sendMessage(prefix + ChatColor.GREEN + "You were teleported to spawn!");
-        player.sendActionBar(Component.text(ChatColor.GREEN + "Teleport successful!"));
+        player.sendMessage(prefix + ChatColor.GREEN + "Du wurdest zum Spawn teleportiert!");
+        player.sendActionBar(Component.text(ChatColor.GREEN + "Teleport erfolgreich!"));
     }
 }

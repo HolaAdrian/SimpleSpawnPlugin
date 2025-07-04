@@ -17,30 +17,30 @@ public class ShowSpawnInformations implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String @NotNull [] strings) {
         String prefix = SimpleSpawn.main.prefix;
         if (!commandSender.hasPermission(new Permission("simplespawn.showspawn"))) {
-            commandSender.sendMessage(prefix + ChatColor.RED + "You don't have permission to see the spawn coordinates!");
+            commandSender.sendMessage(prefix + ChatColor.RED + "Du hast keine Berechtigung, die Spawn-Koordinaten einzusehen!");
             return false;
         }
         if (SimpleSpawn.main.getConfig() == null){
-            commandSender.sendMessage(prefix + ChatColor.RED + "The config.yml file was not found!");
+            commandSender.sendMessage(prefix + ChatColor.RED + "Die config.yml Datei wurde nicht gefunden!");
             return false;
         }
 
         FileConfiguration config = SimpleSpawn.main.getConfig();
 
         if (config.getString("prefix") == null){
-            commandSender.sendMessage(prefix + ChatColor.RED + "The prefix is corrupted!");
+            commandSender.sendMessage(prefix + ChatColor.RED + "Der Prefix ist beschädigt!");
             return false;
         }
 
         if (UtilityTools.getCustomConfig() == null){
-            commandSender.sendMessage(prefix + ChatColor.RED + "spawn.yml was not found!");
+            commandSender.sendMessage(prefix + ChatColor.RED + "spawn.yml wurde nicht gefunden!");
             return false;
         }
 
         FileConfiguration custom = UtilityTools.getCustomConfig();
 
         if (!custom.isSet("spawn.world")){
-            commandSender.sendMessage(prefix + ChatColor.RED + "No spawn was set or it's corrupted!");
+            commandSender.sendMessage(prefix + ChatColor.RED + "Es wurde kein Spawn gesetzt oder er ist beschädigt!");
             return false;
         }
 
@@ -57,7 +57,7 @@ public class ShowSpawnInformations implements CommandExecutor {
         double roundYaw = Math.round(yaw);
         double roundPitch = Math.round(pitch);
         String worldname = world.getName();
-        commandSender.sendMessage(prefix + "\n" + ChatColor.GOLD + "Spawn Information: \nX: " + roundX + "\nY: " + roundY + "\nZ: " + roundZ + "\nYaw: " + roundYaw + "\nPitch: " + roundPitch + "\nWorldname: "+ worldname);
+        commandSender.sendMessage(prefix + "\n" + ChatColor.GOLD + "Spawn Informationen: \nX: " + roundX + "\nY: " + roundY + "\nZ: " + roundZ + "\nYaw: " + roundYaw + "\nPitch: " + roundPitch + "\nWeltname: "+ worldname);
 
         return true;
     }
