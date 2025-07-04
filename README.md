@@ -1,30 +1,31 @@
-SimpleSpawn is a lightweight, highly customizable spawn plugin optimized for modern Minecraft servers.
-🌟 Key Features
+SimpleSpawn - Ein leichtgewichtiges, hochgradig anpassbares Spawn-Plugin optimiert für moderne Minecraft-Server.
 
-✅ Exclusive Paper Support – Now optimized for PaperMC with enhanced performance and reliability.
-✅ Improved Configuration – Added teleport delay timer, ground-check toggle, and a cleaner config design.
-✅ Bug Fixes & Polish – Resolved minor issues, cleaned up code, and fixed grammatical errors in messages.
+🌟 Hauptmerkmale
+
+✅ Exklusive Paper-Unterstützung - Jetzt für PaperMC optimiert mit verbesserter Leistung und Zuverlässigkeit.
+✅ Überarbeitete Konfiguration - Teleport-Verzögerung, Boden-Check-Option und übersichtlichere Config-Struktur.
+✅ Fehlerbehebungen & Optimierungen - Kleinere Probleme behoben, Code bereinigt und grammatikalische Fehler in Nachrichten korrigiert.
+
 📦 Installation
 
-    Download the latest .jar from the Releases section.
+    Lade die neueste .jar-Datei aus dem Releases-Bereich herunter.
 
-    Drop it into your server’s plugins folder.
+    Lege sie in den plugins-Ordner deines Servers.
 
-    Restart the server.
+    Starte den Server neu.
 
-📌 Note:
+📌 Hinweis:
 
-    Configs have been redesigned – Back up your old spawn.yml and config.yml before updating!
+    Configs wurden neu strukturiert – Sichere deine alten spawn.yml und config.yml vor dem Update!
 
-    Spigot/Bukkit support dropped – PaperMC is now required.
+    Spigot/Bukkit-Unterstützung eingestellt – PaperMC ist jetzt Voraussetzung.
 
-📂 Repository Structure
+📂 Repository-Struktur
 
-    /Code – Full source code (for developers).
+    /Code – Vollständiger Quellcode (für Entwickler)
 
-    /Plugin – Standalone .jar (ready-to-use).
+    /Plugin – Fertige .jar-Datei (einsatzbereit)
 
-🔧 Compatibility
-
-✔ Tested on PaperMC 1.17+ (recommended).
-❌ No longer supports Spigot/CraftBukkit due to API limitations.
+🔧 Kompatibilität
+✔ Getestet mit PaperMC 1.17+ (empfohlen)
+❌ Unterstützt Spigot/CraftBukkit nicht mehr (aufgrund von API-Limitierungen).
