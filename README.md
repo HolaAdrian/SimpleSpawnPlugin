@@ -18,6 +18,8 @@ SimpleSpawn is a lightweight, highly customizable spawn plugin optimized for mod
 
     Spigot/Bukkit support dropped – PaperMC is now required.
 
+    Easily change the language or set custom messages via the config.yml
+
 📂 Repository Structure
 
     /Code – Full source code (for developers).
