@@ -27,7 +27,7 @@ public class SafeManager {
         playerConfig.set("player-spawns", null);
 
         // Save all entries from HashMap
-        for (Map.Entry<String, Location> entry : SimpleSpawn.main.playercoordinations.entrySet()) {
+        for (Map.Entry<String, Location> entry : SimpleSpawn.main.playerCoordinates.entrySet()) {
             String uuidString = entry.getKey();
             Location loc = entry.getValue();
 
@@ -46,7 +46,7 @@ public class SafeManager {
     // Load ALL locations from YAML into memory
     public static void loadAll() {
 
-        SimpleSpawn.main.playercoordinations.clear();
+        SimpleSpawn.main.playerCoordinates.clear();
 
         if (!playerConfig.contains("player-spawns")) {
             return;
@@ -69,7 +69,7 @@ public class SafeManager {
 
 
             if (loc != null) {
-                SimpleSpawn.main.playercoordinations.put(uuidString, loc);
+                SimpleSpawn.main.playerCoordinates.put(uuidString, loc);
             }
         }
     }

@@ -1,5 +1,5 @@
 name: SimpleSpawn
-version: '3.1'
+version: '4.0'
 main: de.adrian.simpleSpawn.SimpleSpawn
 api-version: '1.21'
 authors: [ hiadrian ]

@@ -1,130 +1,187 @@
 package de.adrian.simpleSpawn.Commands;
 
 import de.adrian.simpleSpawn.SimpleSpawn;
+import de.adrian.simpleSpawn.Utility.TranslationManager;
 import de.adrian.simpleSpawn.Utility.UtilityTools;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.Permission;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
-public class BackCommand implements CommandExecutor {
+import java.util.HashMap;
+import java.util.Map;
 
+public class BackCommand implements CommandExecutor {
     private BukkitTask teleportTask;
-    private int countdowntime = 0;
+    private int countdownTime = 0;
 
     @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String @NotNull [] strings) {
-        String prefix = SimpleSpawn.main.prefix;
-        if (commandSender instanceof Player) {
-            if (!commandSender.hasPermission(new Permission("simplespawn.back"))) {
-                commandSender.sendMessage(prefix + ChatColor.RED + "You don't have permission to go back!");
-                return false;
-            }
-        }
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
+                             @NotNull String label, @NotNull String[] args) {
 
-        if (SimpleSpawn.main.getConfig() == null){
-            commandSender.sendMessage(prefix + ChatColor.RED + "No config.yml was found!");
-            return false;
-        }
-        FileConfiguration config = SimpleSpawn.main.getConfig();
-        if (config.getString("prefix") == null){
-            commandSender.sendMessage(prefix + ChatColor.RED + "The prefix is corrupt!");
-            return false;
-        }
-        if (UtilityTools.getPlayerConfig() == null){
-            commandSender.sendMessage(prefix + ChatColor.RED + "The playercoords.yml file was not found!");
-            return false;
-        }
-        if (!(commandSender instanceof Player)){
-            commandSender.sendMessage(prefix + ChatColor.RED + "You must be a player to go back!");
+        // Validate sender
+        if (!(sender instanceof Player)) {
+            sender.sendMessage(TranslationManager.get("must_be_player_back"));
             return false;
         }
 
-        Player player = ((Player) commandSender).getPlayer();
+        Player player = (Player) sender;
 
-        if (!SimpleSpawn.main.playercoordinations.containsKey(player.getUniqueId().toString())){
-            player.sendMessage(prefix + ChatColor.RED + "No valid coordinates found! Maybe you need to use /spawn first.");
+        // Permission check
+        if (!player.hasPermission("simplespawn.back")) {
+            player.sendMessage(TranslationManager.get("no_permission_back"));
             return false;
         }
 
-        Location loc = SimpleSpawn.main.playercoordinations.get(player.getUniqueId().toString());
+        // Config validation
+        FileConfiguration config = validateConfigs(player);
+        if (config == null) return false;
 
+        // Location validation
+        Location returnLocation = validateLocation(player);
+        if (returnLocation == null) return false;
 
+        // Ground check
+        if (!validateGround(player, config)) return false;
 
+        // Cooldown handling
+        if (!handleCooldown(player, config, returnLocation)) return false;
+
+        return true;
+    }
+
+    private FileConfiguration validateConfigs(Player player) {
+        if (SimpleSpawn.main.getConfig() == null) {
+            player.sendMessage(TranslationManager.get("no_config"));
+            return null;
+        }
+
+        if (UtilityTools.getPlayerConfig() == null) {
+            player.sendMessage(TranslationManager.get("no_playercoords_file"));
+            return null;
+        }
+
+        return SimpleSpawn.main.getConfig();
+    }
+
+    private Location validateLocation(Player player) {
+        String uuidString = player.getUniqueId().toString();
+        if (!SimpleSpawn.main.playerCoordinates.containsKey(uuidString)) {
+            player.sendMessage(TranslationManager.get("no_coords_back"));
+            return null;
+        }
+        return SimpleSpawn.main.playerCoordinates.get(uuidString);
+    }
+
+    private boolean validateGround(Player player, FileConfiguration config) {
         if (!config.isBoolean("ground_back")) {
-            player.sendMessage(prefix + ChatColor.RED + "The 'ground_back' setting in config.yml is corrupt or not set");
+            sendSettingError(player, "ground_back");
             return false;
         }
 
-
-        if (config.getBoolean("ground_back") && !player.isOnGround()){
-            player.sendMessage(prefix+ ChatColor.RED + "You must be on the ground to teleport back!");
+        if (config.getBoolean("ground_back") && !player.isOnGround()) {
+            player.sendMessage(TranslationManager.get("ground_required_back"));
             return false;
         }
+        return true;
+    }
 
+    private boolean handleCooldown(Player player, FileConfiguration config, Location returnLocation) {
+        // Validate cooldown settings
         if (!config.isBoolean("cooldownrequirement_back")) {
-            player.sendMessage(prefix + ChatColor.RED + "The 'cooldownrequirement_back' setting in config.yml is corrupt or not set");
+            sendSettingError(player, "cooldownrequirement_back");
             return false;
         }
 
         if (!config.isBoolean("OneTimeUse")) {
-            player.sendMessage(prefix + ChatColor.RED + "The 'OneTimeUse' setting in config.yml is corrupt or not set");
+            sendSettingError(player, "OneTimeUse");
             return false;
         }
 
-        if (!config.getBoolean("cooldownrequirement_back")){
-            player.teleport(loc);
-            player.sendMessage(prefix + ChatColor.GREEN + "You were teleported back!");
-            player.sendActionBar(Component.text(ChatColor.GREEN + "Teleport successful!"));
-
-            if (config.getBoolean("OneTimeUse")) SimpleSpawn.main.playercoordinations.remove(player.getUniqueId().toString());
-
+        // Instant teleport if no cooldown
+        if (!config.getBoolean("cooldownrequirement_back")) {
+            executeTeleport(player, returnLocation, config.getBoolean("OneTimeUse"));
             return true;
         }
 
-        if (!config.isInt("cooldown_back")){
-            player.sendMessage(prefix + ChatColor.RED + "The 'cooldown_back' setting in config.yml is corrupted or not set");
+        // Validate cooldown time
+        if (!config.isInt("cooldown_back")) {
+            player.sendMessage(TranslationManager.get("cooldown_back_corrupt"));
             return false;
         }
 
-
-        int cooldown = config.getInt("cooldown_back");
-
-        Location loc2 = player.getLocation();
-
-        teleportTask = Bukkit.getScheduler().runTaskTimer(SimpleSpawn.main, new Runnable() {
-            @Override
-            public void run() {
-                if (countdowntime >= cooldown) {
-                    player.teleport(loc);
-                    player.sendMessage(prefix + ChatColor.GREEN + "You were teleported back!");
-                    player.sendActionBar(Component.text(ChatColor.GREEN + "Teleport successful!"));
-                    if (config.getBoolean("OneTimeUse")) SimpleSpawn.main.playercoordinations.remove(player.getUniqueId().toString());
-                    teleportTask.cancel();
-                    return;
-                }
-
-                if (Math.round(loc2.x()) != Math.round(player.getLocation().x()) || Math.round(loc2.y()) != Math.round(player.getLocation().y()) || Math.round(loc2.z()) != Math.round(player.getLocation().z())){
-                    player.sendActionBar(Component.text(ChatColor.RED + "You moved, so the teleport was canceled!"));
-                    teleportTask.cancel();
-                    return;
-                }
-                countdowntime++;
-                int timeLeft = cooldown - countdowntime + 1;
-                player.sendActionBar(Component.text(ChatColor.GREEN + "Teleporting in " + timeLeft + " seconds..."));
-
-
-            }
-        }, 0L, 20L);
-
+        // Start cooldown process
+        startTeleportCountdown(player, returnLocation,
+                config.getInt("cooldown_back"),
+                config.getBoolean("OneTimeUse"));
         return true;
+    }
+
+    private void sendSettingError(Player player, String setting) {
+        Map<String, String> replacements = new HashMap<>();
+        replacements.put("%setting%", setting);
+        player.sendMessage(TranslationManager.get("setting_corrupt", replacements));
+    }
+
+    private void executeTeleport(Player player, Location location, boolean oneTimeUse) {
+        player.teleport(location);
+        player.sendMessage(TranslationManager.get("teleport_back_success"));
+        player.sendActionBar(Component.text(
+                TranslationManager.get("actionbar_back_success")
+        ));
+
+        if (oneTimeUse) {
+            SimpleSpawn.main.playerCoordinates.remove(player.getUniqueId().toString());
+        }
+    }
+
+    private void startTeleportCountdown(Player player, Location destination,
+                                        int cooldown, boolean oneTimeUse) {
+        // Cancel existing task if running
+        if (teleportTask != null) {
+            teleportTask.cancel();
+        }
+
+        Location initialLocation = player.getLocation();
+        countdownTime = 0;
+
+        teleportTask = Bukkit.getScheduler().runTaskTimer(SimpleSpawn.main, () -> {
+            if (countdownTime >= cooldown) {
+                executeTeleport(player, destination, oneTimeUse);
+                teleportTask.cancel();
+                return;
+            }
+
+            // Check for movement
+            if (hasMoved(player, initialLocation)) {
+                player.sendActionBar(Component.text(
+                        TranslationManager.get("cooldown_back_canceled")
+                ));
+                teleportTask.cancel();
+                return;
+            }
+
+            countdownTime++;
+            int timeLeft = cooldown - countdownTime + 1;
+
+            Map<String, String> replacements = new HashMap<>();
+            replacements.put("%seconds%", String.valueOf(timeLeft));
+            player.sendActionBar(Component.text(
+                    TranslationManager.get("cooldown_back_start", replacements)
+            ));
+        }, 0L, 20L);
+    }
+
+    private boolean hasMoved(Player player, Location initialLocation) {
+        Location current = player.getLocation();
+        return Math.round(initialLocation.getX()) != Math.round(current.getX()) ||
+                Math.round(initialLocation.getY()) != Math.round(current.getY()) ||
+                Math.round(initialLocation.getZ()) != Math.round(current.getZ());
     }
 }
